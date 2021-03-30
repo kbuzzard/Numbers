@@ -20,12 +20,12 @@ def Equiv.symm {α β} (h : α ≃ β) : β ≃ α where
   inv_fun := h.to_fun
   left_inv := h.right_inv
   right_inv := h.left_inv
-  
-#check Option
-#check Unit
 
-#check Option.none
-#check none
+-- #check Option
+-- #check Unit
+
+-- #check Option.none
+-- #check none
 
 def OptionEmptyEquivUnit : Option Empty ≃ Unit where
   to_fun | none => Unit.unit
@@ -38,7 +38,7 @@ def OptionEmptyEquivUnit : Option Empty ≃ Unit where
     rfl;
 
 instance : Subsingleton Empty where
-  allEq := λ a b => by cases a;
+  allEq a := nomatch a -- (a : Empty) so no cases
 
 def SubsingletonEquivEmptyOrUnit (α : Type) [Subsingleton α] :
   (∃ e : α ≃ Empty, True) ∨ (∃ e : α ≃ Unit, True) := by
@@ -60,3 +60,13 @@ def SubsingletonEquivEmptyOrUnit (α : Type) [Subsingleton α] :
         left_inv := λ x => Subsingleton.elim _ _
         right_inv := λ y => Subsingleton.elim _ _
       }, True.intro⟩ }
+
+def SumEmptyEquiv (α : Type) : Sum Empty α ≃ α where
+  to_fun 
+  | Sum.inl a => nomatch a
+  | Sum.inr a => a
+  inv_fun b := Sum.inr b
+  left_inv
+  | Sum.inl a => nomatch a
+  | Sum.inr a => rfl      
+  right_inv b := rfl
