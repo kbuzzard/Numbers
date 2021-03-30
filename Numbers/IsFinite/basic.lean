@@ -27,8 +27,11 @@ instance (α : Type) [Subsingleton α] : IsFinite α :=
   by cases (SubsingletonEquivEmptyOrUnit α) with
   | _ h => exact equiv inferInstance h.1.symm;
 
-instance (α β : Type) [IsFinite α] [IsFinite β] : IsFinite (Sum α β) :=
-sorry
+instance (α β : Type) [hα : IsFinite α] [hβ : IsFinite β] : IsFinite (Sum α β) :=
+  match hα with 
+  | empty => equiv hβ (SumEmptyEquiv β).symm
+  | option h => sorry -- need induction :-/
+  | equiv h e => sorry
 
 
 --class IsFinite (α : Type) :=
